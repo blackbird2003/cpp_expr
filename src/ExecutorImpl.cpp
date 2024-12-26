@@ -10,6 +10,7 @@ namespace adas
     }
     void ExecutorImpl::Execute(const std::string &commands) noexcept
     {
+        
     }
     Pose ExecutorImpl::Query() const noexcept
     {
