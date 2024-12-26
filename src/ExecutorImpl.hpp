@@ -16,5 +16,13 @@ namespace adas
 
     private:
         Pose pose;
+
+        // Expr2  参考Move成员函数的抽取，完成Move/TurnLeft/TurnRight3个成员函数抽取
+        void Move(void) noexcept;
+        void TurnLeft(void) noexcept;
+        void TurnRight(void) noexcept;
     };
 } // namespace adas
+
+
+
