@@ -5,7 +5,7 @@
 namespace adas
 {
 
-    // 测试 F 指令使小车进入加速状态并执行移动指令
+    // 测试 F 指令使小车进入加速状态并执行移动指令 (FM)
     TEST(ExecutorFastTest, should_return_x_plus_2_given_status_is_fast_command_is_M_and_facing_is_E)
     {
         // given 初始化小车，初始位置为 (0, 0)，朝向 E
@@ -19,7 +19,7 @@ namespace adas
         ASSERT_EQ(target, executor->Query());
     }
 
-    // 测试 F 指令下的左转行为
+    // 测试 F 指令下的左转行为 (FL)
     TEST(ExecutorFastTest, should_return_N_and_x_plus_1_given_status_is_fast_command_is_L_and_facing_is_E)
     {
         // given 初始化小车，初始位置为 (0, 0)，朝向 E
@@ -33,7 +33,7 @@ namespace adas
         ASSERT_EQ(target, executor->Query());
     }
 
-    // 测试 F 指令下的右转行为
+    // 测试 F 指令下的右转行为 (FR)
     TEST(ExecutorFastTest, should_return_S_and_x_plus_1_given_status_is_fast_command_is_R_and_facing_is_E)
     {
         // given 初始化小车，初始位置为 (0, 0)，朝向 E
@@ -47,7 +47,7 @@ namespace adas
         ASSERT_EQ(target, executor->Query());
     }
 
-    // 测试 F 指令状态的取消
+    // 测试 F 指令状态的取消(FF)
     TEST(ExecutorFastTest, should_return_y_plus_1_given_command_is_FFM_and_facing_is_N)
     {
         // given 初始化小车，初始位置为 (0, 0)，朝向 N
