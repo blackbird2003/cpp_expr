@@ -33,12 +33,13 @@ namespace adas
         // cmderMap.emplace('F', fastCommand.operate);
 
         // Expr3 函数对象实现
-        std::unordered_map<char, std::function<void(PoseHandler & poseHandler)>> cmderMap;
-        cmderMap.emplace('M', MoveCommand());
-        cmderMap.emplace('L', TurnLeftCommand());
-        cmderMap.emplace('R', TurnRightCommand());
-        cmderMap.emplace('F', FastCommand());
-
+        // Expr3 应用初始化语义，简化表驱动代码
+        const std::unordered_map<char, std::function<void(PoseHandler & poseHandler)>> cmderMap{
+            {'M', MoveCommand()},
+            {'L', TurnLeftCommand()},
+            {'R', TurnRightCommand()},
+            {'F', FastCommand()},
+        };
 
         for (const auto cmd : commands)
         {
