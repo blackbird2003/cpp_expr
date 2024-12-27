@@ -39,6 +39,14 @@ namespace adas
             }
             poseHandler.Move();
         };
+        void operator()(PoseHandler &poseHandler) const noexcept
+        {
+            if (poseHandler.IsFast())
+            {
+                poseHandler.Move();
+            }
+            poseHandler.Move();
+        }
     };
     // 左转
     class TurnLeftCommand final //: public ICommand
@@ -61,6 +69,14 @@ namespace adas
             }
             poseHandler.TurnLeft();
         };
+        void operator()(PoseHandler &poseHandler) const noexcept
+        {
+            if (poseHandler.IsFast())
+            {
+                poseHandler.Move();
+            }
+            poseHandler.TurnLeft();
+        }
     };
     // 右转
     class TurnRightCommand final //: public ICommand
@@ -83,6 +99,14 @@ namespace adas
             }
             poseHandler.TurnRight();
         };
+        void operator()(PoseHandler &poseHandler) const noexcept
+        {
+            if (poseHandler.IsFast())
+            {
+                poseHandler.Move();
+            }
+            poseHandler.TurnRight();
+        }
     };
     // Expr 2 Fast Command类
     class FastCommand final //: public ICommand
@@ -96,5 +120,9 @@ namespace adas
         {
             poseHandler.Fast();
         };
+        void operator()(PoseHandler &poseHandler) const noexcept
+        {
+            poseHandler.Fast();
+        }
     };
 } // namespace adas
