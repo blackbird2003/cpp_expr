@@ -12,12 +12,9 @@ namespace adas
 
     public:
         void Execute(const std::string &command) noexcept override;
-        Pose Query(void) const noexcept override; //override 表示该函数为虚函数的重写，如果没找到匹配的基类虚函数就会报错
+        Pose Query(void) const noexcept override; // override 表示该函数为虚函数的重写，如果没找到匹配的基类虚函数就会报错
 
-    private:
-        Pose pose;
-        bool fast{false};
-
+    public: // Expr2 修改依赖方法访问权限(指令处理的类独立到文件中)
         // Expr2  完成Move/TurnLeft/TurnRight3个成员函数抽取
         void Move(void) noexcept;
         void TurnLeft(void) noexcept;
@@ -26,68 +23,10 @@ namespace adas
         // Expr2 添加F指令接口
         void Fast(void) noexcept;
         bool IsFast(void) const noexcept;
-        
-        // Expr2 Move/TurnLeft/TurnRight封装到类中
-        class ICommand
-        {
-        public:
-            virtual ~ICommand() = default;
-            virtual void DoOperate(ExecutorImpl &executor) const noexcept = 0;
-        };
-        //移动
-        class MoveCommand final : public ICommand
-        {
-        public:
-            void DoOperate(ExecutorImpl &executor) const noexcept override
-            {
-                // 如果处于加速状态，则移动两次
-                if (executor.IsFast())
-                {
-                    executor.Move();
-                }
-                executor.Move(); // 默认移动一次
-            }
-        };
-        //左转
-        class TurnLeftCommand final : public ICommand
-        {
-        public:
-            void DoOperate(ExecutorImpl &executor) const noexcept override
-            {
-                // 如果处于加速状态，先前进一步
-                if (executor.IsFast())
-                {
-                    executor.Move();
-                }
-                executor.TurnLeft(); // 执行左转
-            }
-        };
-        //右转
-        class TurnRightCommand final : public ICommand
-        {
-        public:
-            void DoOperate(ExecutorImpl &executor) const noexcept override
-            {
-                // 如果处于加速状态，先前进一步
-                if (executor.IsFast())
-                {
-                    executor.Move();
-                }
-                executor.TurnRight(); // 执行右转
-            }
-        };
-        //Expr 2 Fast Command类
-        class FastCommand final : public ICommand
-        {
-        public:
-            void DoOperate(ExecutorImpl &executor) const noexcept override
-            {
-                executor.Fast(); // 切换加速状态
-            }
-        };
+
+    private:
+        Pose pose;
+        bool fast{false};
     };
-    
+
 } // namespace adas
-
-
-
