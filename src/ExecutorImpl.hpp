@@ -1,5 +1,7 @@
 #pragma once
 #include "Executor.hpp"
+#include "PoseHandler.hpp"
+
 namespace adas
 {
     class ExecutorImpl final : public Executor // 在类的定义中使用 final，会禁止该类作为基类被进一步继承。
@@ -27,6 +29,9 @@ namespace adas
     private:
         Pose pose;
         bool fast{false};
+
+        // Expr2 解耦循环依赖
+        PoseHandler poseHandler;
     };
 
 } // namespace adas

@@ -7,7 +7,7 @@ namespace adas
     {
         return new (std::nothrow) ExecutorImpl(pose);
     }
-    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : pose(pose)
+    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose)
     {
     }
     void ExecutorImpl::Fast() noexcept
@@ -43,13 +43,13 @@ namespace adas
 
             if (cmder)
             {
-                cmder->DoOperate(*this);
+                cmder->DoOperate(poseHandler);
             }
         }
     }
     Pose ExecutorImpl::Query() const noexcept
     {
-        return pose;
+        return poseHandler.Query();
     }
 
     void ExecutorImpl::Move() noexcept
