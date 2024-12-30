@@ -1,10 +1,10 @@
 #include "CmderFactory.hpp"
 namespace adas
 {
-    std::list<std::function<void(PoseHandler &poseHandler)>> CmderFactory::GetCmders(
+    CmderList CmderFactory::GetCmders(
         const std::string &commands) const noexcept
     {
-        std::list<std::function<void(PoseHandler & poseHandler)>> cmders;
+        CmderList cmders;
         for (const auto cmd : commands)
         {
             const auto it = cmderMap.find(cmd);
