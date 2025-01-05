@@ -1,46 +1,42 @@
-// 初始化情况测试 - 使用 DDT
+// 初始化情况测试
+// 由于初始化情况测试涉及Pose、CarType的缺省，这里不使用DDT。其他测试均提供完整的初始化条件，统一使用DDT进行。
 #include <gtest/gtest.h>
 #include "Executor.hpp"
 #include "PoseEq.hpp" // Pose 的比较运算符重载
 
-namespace adas {
+namespace adas
+{
 
-// 测试数据结构
-struct InitTestCase {
-    Pose initialPose;       // 初始位置
-    CarType carType;        // 初始车辆类型
-    Pose expectedPose;      // 预期位置
-    CarType expectedCarType; // 预期车辆类型
-};
+    TEST(ExecutorInitTest, should_return_default_pose_and_cartype_when_without_any_init_and_command)
+    {
+        // given
+        std::unique_ptr<Executor> executor(Executor::NewExecutor());
+        // when
+        // then
+        const Pose target({0, 0, 'N'}); // 默认Pose为{0,0,'N'}
+        ASSERT_EQ(target, executor->Query());
+        ASSERT_EQ("Normal", executor->GetCarType()); // 默认车辆类型为 "Normal"
+    }
 
-// 定义参数化测试类
-class ExecutorInitDDTTest : public ::testing::TestWithParam<InitTestCase> {};
+    TEST(ExecutorInitTest, should_return_default_car_type_when_initialized_with_pose_only)
+    {
+        // given
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({1, 2, 'W'}));
+        // then
+        const Pose target({1, 2, 'W'});
+        ASSERT_EQ(target, executor->Query());
+        ASSERT_EQ("Normal", executor->GetCarType()); // 默认车辆类型为 "Normal"
+    }
 
-// 使用参数化测试逻辑
-TEST_P(ExecutorInitDDTTest, InitializesCorrectly) {
-    // 获取测试数据
-    const InitTestCase& testCase = GetParam();
-
-    // given
-    std::unique_ptr<Executor> executor(Executor::NewExecutor(testCase.initialPose, testCase.carType));
-
-    // when(none) 
-    // then
-    ASSERT_EQ(testCase.expectedPose, executor->Query());
-    ASSERT_EQ(testCase.expectedCarType, executor->GetCarType());
-}
-
-// 注册测试数据
-INSTANTIATE_TEST_SUITE_P(
-    ExecutorInitTests, // 测试组名称
-    ExecutorInitDDTTest,
-    ::testing::Values(
-        // 测试用例
-        InitTestCase{{0, 0, 'N'}, "Normal", {0, 0, 'N'}, "Normal"},    // 默认初始化
-        InitTestCase{{1, 2, 'W'}, "Normal", {1, 2, 'W'}, "Normal"},    // 仅指定初始位置
-        InitTestCase{{2, 3, 'S'}, "Sports", {2, 3, 'S'}, "Sports"},    // 指定位置和车辆类型
-        InitTestCase{{0, 0, 'E'}, "Bus", {0, 0, 'E'}, "Bus"}           // 指定不同车辆类型
-    )
-);
+    TEST(ExecutorInitTest, should_return_specified_car_type_and_pose_when_initialized)
+    {
+        // given
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({2, 3, 'S'}, "Sports"));
+        // then
+        const Pose target({2, 3, 'S'});
+        ASSERT_EQ(target, executor->Query());
+        printf("executor->GetCarType()=%s\n", executor->GetCarType().c_str());
+        ASSERT_EQ("Sports", executor->GetCarType()); // 初始化为 "Sports"
+    }
 
 } // namespace adas
