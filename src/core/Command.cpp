@@ -28,6 +28,54 @@ namespace adas
                 poseHandler.Forward();
             }
         }
+        else if (poseHandler.GetCarType() == "Sports")
+        {
+            if (poseHandler.IsFast() && poseHandler.IsReverse())
+            {
+                poseHandler.Backward(); // B&F: 后退4格
+                poseHandler.Backward();
+                poseHandler.Backward();
+                poseHandler.Backward();
+            }
+            else if (poseHandler.IsFast())
+            {
+                poseHandler.Forward(); // F: 前进4格
+                poseHandler.Forward();
+                poseHandler.Forward();
+                poseHandler.Forward();
+            }
+            else if (poseHandler.IsReverse())
+            {
+                poseHandler.Backward(); // B: 后退2格
+                poseHandler.Backward();
+            }
+            else
+            {
+                poseHandler.Forward(); // Normal: 前进2格
+                poseHandler.Forward();
+            }
+        }
+        else if (poseHandler.GetCarType() == "Bus")
+        {
+            if (poseHandler.IsFast() && poseHandler.IsReverse())
+            {
+                poseHandler.Backward(); // B&F: 后退2格
+                poseHandler.Backward();
+            }
+            else if (poseHandler.IsFast())
+            {
+                poseHandler.Forward(); // F: 前进2格
+                poseHandler.Forward();
+            }
+            else if (poseHandler.IsReverse())
+            {
+                poseHandler.Backward(); // B: 后退1格
+            }
+            else
+            {
+                poseHandler.Forward(); // Normal: 前进1格
+            }
+        }
     }
 
     // 左转
