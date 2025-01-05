@@ -1,3 +1,4 @@
+// 加速状态下的指令测试，包含FM,FL,FR,FF
 #include <gtest/gtest.h>
 #include "Executor.hpp"
 #include "PoseEq.hpp" // Pose 的比较运算符重载
@@ -23,7 +24,7 @@ namespace adas
     TEST(ExecutorFastTest, should_return_N_and_x_plus_1_given_status_is_fast_command_is_L_and_facing_is_E)
     {
         // given 初始化小车，初始位置为 (0, 0)，朝向 E
-        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor(Pose{0, 0, 'E'}));
 
         // when 执行指令 "FL"（进入加速状态、前进一步并左转）
         executor->Execute("FL");

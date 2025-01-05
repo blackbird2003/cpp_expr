@@ -8,6 +8,7 @@ namespace adas
     {
     public:
         explicit ExecutorImpl(const Pose &pose) noexcept;
+        explicit ExecutorImpl(const CarType &carType) noexcept;
         explicit ExecutorImpl(const Pose &pose, const CarType &carType) noexcept;
         ~ExecutorImpl() noexcept = default;
         ExecutorImpl(const ExecutorImpl &) = delete;
@@ -18,9 +19,7 @@ namespace adas
         Pose Query(void) const noexcept override; // override 表示该函数为虚函数的重写，如果没找到匹配的基类虚函数就会报错
         CarType GetCarType(void) const noexcept override;
     private:
-        PoseHandler poseHandler; // 使用PossHandler管理车辆状态
-        Pose pose;
-        CarType carType;
+        PoseHandler poseHandler; // 使用PossHandler管理车辆状态,包含Pose和CarType
     };
 
 } // namespace adas

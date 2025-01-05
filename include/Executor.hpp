@@ -17,6 +17,7 @@ namespace adas
         // Caller should delete *executor when it is no longer needed.
         static Executor *NewExecutor(const Pose &pose = {0, 0, 'N'}, const CarType &carType = "Normal") noexcept;
 
+        
 
         Executor(void) = default; // 使用编译器生成的默认实现
         virtual ~Executor(void) = default;

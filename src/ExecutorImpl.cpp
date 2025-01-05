@@ -9,17 +9,21 @@ namespace adas
 {
     Executor *Executor::NewExecutor(const Pose &pose, const CarType &carType) noexcept
     {
-        //printf("Call 0\n");
+        //printf("Call 0. carType=%s\n", carType.c_str());
         return new (std::nothrow) ExecutorImpl(pose, carType);
     }
-    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose), carType("Normal")
+   
+    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose)
     {
         //printf("Call 1\n");
     }
-    ExecutorImpl::ExecutorImpl(const Pose &pose, const CarType &carType) noexcept : poseHandler(pose), carType(carType)
+    ExecutorImpl::ExecutorImpl(const CarType &carType) noexcept : poseHandler(carType)
     {
-        //printf("Call 2\n");
-        //printf("carType=%s\n", carType.c_str());
+        // printf("Call 1\n");
+    }
+    ExecutorImpl::ExecutorImpl(const Pose &pose, const CarType &carType) noexcept : poseHandler(pose, carType)
+    {
+        //printf("Call 2. carType=%s, this->GetCarType=%s\n", carType.c_str(), this->GetCarType().c_str());
     }
 
     void ExecutorImpl::Execute(const std::string &commands) noexcept

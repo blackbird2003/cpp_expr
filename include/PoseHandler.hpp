@@ -8,6 +8,7 @@ namespace adas
     {
     public:
         PoseHandler(const Pose &pose) noexcept;
+        PoseHandler(const CarType &carType) noexcept;
         PoseHandler(const Pose &pose, const CarType &carType) noexcept;
         PoseHandler(const PoseHandler &) = delete;
         PoseHandler &operator=(const PoseHandler &) = delete;

@@ -4,6 +4,9 @@ namespace adas
     PoseHandler::PoseHandler(const Pose &pose) noexcept : pose(pose), carType("Normal")
     {
     }
+    PoseHandler::PoseHandler(const CarType &carType) noexcept : pose({0, 0, 'N'}), carType(carType)
+    {
+    }
     PoseHandler::PoseHandler(const Pose &pose, const CarType &carType) noexcept : pose(pose), carType(carType)
     {
     }
