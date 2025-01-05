@@ -1,5 +1,4 @@
 #include "ExecutorImpl.hpp"
-#include "Command.hpp"
 #include <memory>
 #include <unordered_map>
 
@@ -8,52 +7,23 @@
 
 namespace adas
 {
-    Executor *Executor::NewExecutor(const Pose &pose) noexcept
+    Executor *Executor::NewExecutor(const Pose &pose, const CarType &carType) noexcept
     {
-        return new (std::nothrow) ExecutorImpl(pose);
+        //printf("Call 0\n");
+        return new (std::nothrow) ExecutorImpl(pose, carType);
     }
-    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose)
+    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose), carType("Normal")
     {
+        //printf("Call 1\n");
     }
-    void ExecutorImpl::Fast() noexcept
+    ExecutorImpl::ExecutorImpl(const Pose &pose, const CarType &carType) noexcept : poseHandler(pose), carType(carType)
     {
-        fast = !fast;
+        //printf("Call 2\n");
+        //printf("carType=%s\n", carType.c_str());
     }
-    bool ExecutorImpl::IsFast() const noexcept
-    {
-        return fast;
-    }
+
     void ExecutorImpl::Execute(const std::string &commands) noexcept
     {
-        // //Expr3 函数式编程，修改表驱动
-        // std::unordered_map<char, std::function<void(PoseHandler & poseHandler)>> cmderMap;
-        // MoveCommand moveCommand;
-        // cmderMap.emplace('M', moveCommand.operate);
-        // TurnLeftCommand turnLeftCommand;
-        // cmderMap.emplace('L', turnLeftCommand.operate);
-        // TurnRightCommand turnRightCommand;
-        // cmderMap.emplace('R', turnRightCommand.operate);
-        // FastCommand fastCommand;
-        // cmderMap.emplace('F', fastCommand.operate);
-
-        // Expr3 函数对象实现
-        // Expr3 应用初始化语义，简化表驱动代码
-        // const std::unordered_map<char, std::function<void(PoseHandler & poseHandler)>> cmderMap{
-        //     {'M', MoveCommand()},
-        //     {'L', TurnLeftCommand()},
-        //     {'R', TurnRightCommand()},
-        //     {'F', FastCommand()},
-        //     {'B', ReverseCommand()}};
-
-        // for (const auto cmd : commands)
-        // {
-        //     const auto it = cmderMap.find(cmd);
-        //     if (it != cmderMap.end())
-        //     {
-        //         it->second(poseHandler);
-        //     }
-        // }
-
         // Expr3 使用单体工厂类
         const auto cmders = Singleton<CmderFactory>::Instance().GetCmders(commands);
         std::for_each(
@@ -65,65 +35,7 @@ namespace adas
     {
         return poseHandler.Query();
     }
-
-    void ExecutorImpl::Move() noexcept
-    {
-        if (pose.heading == 'E')
-        {
-            ++pose.x;
-        }
-        else if (pose.heading == 'W')
-        {
-            --pose.x;
-        }
-        else if (pose.heading == 'N')
-        {
-            ++pose.y;
-        }
-        else if (pose.heading == 'S')
-        {
-            --pose.y;
-        }
+    CarType ExecutorImpl::GetCarType() const noexcept {
+        return poseHandler.GetCarType();
     }
-
-    void ExecutorImpl::TurnLeft() noexcept
-    {
-        if (pose.heading == 'E')
-        {
-            pose.heading = 'N';
-        }
-        else if (pose.heading == 'N')
-        {
-            pose.heading = 'W';
-        }
-        else if (pose.heading == 'W')
-        {
-            pose.heading = 'S';
-        }
-        else if (pose.heading == 'S')
-        {
-            pose.heading = 'E';
-        }
-    }
-
-    void ExecutorImpl::TurnRight() noexcept
-    {
-        if (pose.heading == 'E')
-        {
-            pose.heading = 'S';
-        }
-        else if (pose.heading == 'S')
-        {
-            pose.heading = 'W';
-        }
-        else if (pose.heading == 'W')
-        {
-            pose.heading = 'N';
-        }
-        else if (pose.heading == 'N')
-        {
-            pose.heading = 'E';
-        }
-    }
-
 } // namespace adas

@@ -1,7 +1,10 @@
 #include "PoseHandler.hpp"
 namespace adas
 {
-    PoseHandler::PoseHandler(const Pose &pose) noexcept : pose(pose)
+    PoseHandler::PoseHandler(const Pose &pose) noexcept : pose(pose), carType("Normal")
+    {
+    }
+    PoseHandler::PoseHandler(const Pose &pose, const CarType &carType) noexcept : pose(pose), carType(carType)
     {
     }
     void PoseHandler::Forward() noexcept
@@ -84,6 +87,10 @@ namespace adas
     {
         return pose;
     }
+    CarType PoseHandler::GetCarType() const noexcept
+    {
+        return carType;
+    }
     void PoseHandler::Fast() noexcept
     {
         fast = !fast;
@@ -92,10 +99,12 @@ namespace adas
     {
         return fast;
     }
-    void PoseHandler::Reverse() noexcept {
+    void PoseHandler::Reverse() noexcept
+    {
         reverse = !reverse;
     }
-    bool PoseHandler::IsReverse() const noexcept {
+    bool PoseHandler::IsReverse() const noexcept
+    {
         return reverse;
     }
 }

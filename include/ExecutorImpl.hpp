@@ -8,6 +8,7 @@ namespace adas
     {
     public:
         explicit ExecutorImpl(const Pose &pose) noexcept;
+        explicit ExecutorImpl(const Pose &pose, const CarType &carType) noexcept;
         ~ExecutorImpl() noexcept = default;
         ExecutorImpl(const ExecutorImpl &) = delete;
         ExecutorImpl &operator=(const ExecutorImpl &) = delete;
@@ -15,23 +16,11 @@ namespace adas
     public:
         void Execute(const std::string &command) noexcept override;
         Pose Query(void) const noexcept override; // override 表示该函数为虚函数的重写，如果没找到匹配的基类虚函数就会报错
-
-    public: // Expr2 修改依赖方法访问权限(指令处理的类独立到文件中)
-        // Expr2  完成Move/TurnLeft/TurnRight3个成员函数抽取
-        void Move(void) noexcept;
-        void TurnLeft(void) noexcept;
-        void TurnRight(void) noexcept;
-
-        // Expr2 添加F指令接口
-        void Fast(void) noexcept;
-        bool IsFast(void) const noexcept;
-
+        CarType GetCarType(void) const noexcept override;
     private:
+        PoseHandler poseHandler; // 使用PossHandler管理车辆状态
         Pose pose;
-        bool fast{false};
-
-        // Expr2 解耦循环依赖
-        PoseHandler poseHandler;
+        CarType carType;
     };
 
 } // namespace adas

@@ -1,12 +1,14 @@
+// 管理车辆的位置状态信息，实现原子性操作
 #pragma once
 #include "Executor.hpp"
-// Expr2 解耦循环依赖，封装抽离ExecutorImpl状态数据
+#include <string>
 namespace adas
 {
     class PoseHandler final
     {
     public:
         PoseHandler(const Pose &pose) noexcept;
+        PoseHandler(const Pose &pose, const CarType &carType) noexcept;
         PoseHandler(const PoseHandler &) = delete;
         PoseHandler &operator=(const PoseHandler &) = delete;
 
@@ -23,9 +25,11 @@ namespace adas
         bool IsReverse(void) const noexcept;
 
         Pose Query(void) const noexcept;
+        CarType GetCarType(void) const noexcept;
 
     private:
         Pose pose;
+        CarType carType;
         bool fast{false};
         bool reverse{false};
     };

@@ -1,12 +1,8 @@
+//实现指令类，管理每一条指令的执行
 #pragma once
 #include "PoseHandler.hpp"
-
-// Expr2 代码优化：指令处理的类独立到文件中
-
-// Expr2 解耦循环依赖：executor -> poseHandler
-
-// Expr3 改为函数式编程
 #include <functional>
+
 
 namespace adas
 {
