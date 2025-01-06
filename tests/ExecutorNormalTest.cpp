@@ -6,7 +6,7 @@ namespace adas
 
     // Normal状态下的指令测试
     INSTANTIATE_TEST_SUITE_P(
-        ExecutorNormalTests,
+        ExecutorNormalTest,
         ExecutorDDTTest,
         ::testing::Values(
             // 普通车

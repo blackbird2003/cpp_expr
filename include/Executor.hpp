@@ -10,7 +10,7 @@ namespace adas
         int y;
         char heading;
     };
-    using CarType = std::string;
+    using CarType = std::string; // 车辆有Normal Sports Bus三种类型
     class Executor
     {
     public:
