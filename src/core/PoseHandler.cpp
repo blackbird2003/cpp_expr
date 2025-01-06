@@ -10,42 +10,42 @@ namespace adas
     PoseHandler::PoseHandler(const Pose &pose, const CarType &carType) noexcept : pose(pose), carType(carType)
     {
     }
-    void PoseHandler::Forward() noexcept
+    void PoseHandler::Forward(int step) noexcept
     {
         if (pose.heading == 'E')
         {
-            ++pose.x;
+            pose.x += step;
         }
         else if (pose.heading == 'W')
         {
-            --pose.x;
+            pose.x -= step;
         }
         else if (pose.heading == 'N')
         {
-            ++pose.y;
+            pose.y += step;
         }
         else if (pose.heading == 'S')
         {
-            --pose.y;
+            pose.y -= step;;
         }
     }
-    void PoseHandler::Backward() noexcept
+    void PoseHandler::Backward(int step) noexcept
     {
         if (pose.heading == 'E')
         {
-            --pose.x;
+            pose.x -= step;
         }
         else if (pose.heading == 'W')
         {
-            ++pose.x;
+            pose.x += step;
         }
         else if (pose.heading == 'N')
         {
-            --pose.y;
+            pose.y -= step;
         }
         else if (pose.heading == 'S')
         {
-            ++pose.y;
+            pose.y += step;
         }
     }
     void PoseHandler::TurnLeft() noexcept

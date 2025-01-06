@@ -1,10 +1,9 @@
+// Normal状态下的指令测试，包含四个方向下的M,L,R
 #include <gtest/gtest.h>
 #include "ExecutorDDTTest.hpp"
 
 namespace adas
 {
-
-    // Normal状态下的指令测试
     INSTANTIATE_TEST_SUITE_P(
         ExecutorNormalTest,
         ExecutorDDTTest,

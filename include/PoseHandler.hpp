@@ -14,8 +14,8 @@ namespace adas
         PoseHandler &operator=(const PoseHandler &) = delete;
 
     public:
-        void Forward(void) noexcept;
-        void Backward(void) noexcept;
+        void Forward(int step=1) noexcept;
+        void Backward(int step=1) noexcept;
         void TurnLeft(void) noexcept;
         void TurnRight(void) noexcept;
 

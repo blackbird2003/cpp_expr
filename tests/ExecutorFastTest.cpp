@@ -4,7 +4,6 @@
 
 namespace adas
 {
-    // F状态下的指令测试
     INSTANTIATE_TEST_SUITE_P(
         ExecutorFastTest,
         ExecutorDDTTest,
