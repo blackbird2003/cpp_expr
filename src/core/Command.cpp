@@ -7,25 +7,23 @@ namespace adas
     {
         if (poseHandler.GetCarType() == "Normal")
         {
-            // 如果处于加速状态，执行额外的移动
-            if (poseHandler.IsFast())
+            if (poseHandler.IsFast() && poseHandler.IsReverse())
             {
-                if (poseHandler.IsReverse())
-                {
-                    poseHandler.Backward(); // 加速倒车
-                }
-                else
-                {
-                    poseHandler.Forward(); // 加速前进
-                }
-            }
-            if (poseHandler.IsReverse())
-            {
+                poseHandler.Backward(); // B&F: 后退2格
                 poseHandler.Backward();
+            }
+            else if (poseHandler.IsFast() && !poseHandler.IsReverse())
+            {
+                poseHandler.Forward(); // F: 前进2格
+                poseHandler.Forward();
+            }
+            else if (!poseHandler.IsFast() && poseHandler.IsReverse())
+            {
+                poseHandler.Backward(); // B: 后退1格
             }
             else
             {
-                poseHandler.Forward();
+                poseHandler.Forward(); // Normal: 前进1格
             }
         }
         else if (poseHandler.GetCarType() == "Sports")
@@ -83,27 +81,85 @@ namespace adas
     {
         if (poseHandler.GetCarType() == "Normal")
         {
-            // 如果处于加速状态，先执行移动
-            if (poseHandler.IsFast())
+            // Normal 状态
+            if (!poseHandler.IsFast() && !poseHandler.IsReverse())
             {
-                if (poseHandler.IsReverse())
-                {
-                    poseHandler.Backward();
-                }
-                else
-                {
-                    poseHandler.Forward();
-                }
+                poseHandler.TurnLeft(); // 左转90度
             }
-
-            // 根据倒车状态选择实际转向
-            if (poseHandler.IsReverse())
+            // B 状态
+            else if (poseHandler.IsReverse() && !poseHandler.IsFast())
             {
-                poseHandler.TurnRight(); // 倒车状态下左转为右转
+                poseHandler.TurnRight(); // 右转90度
             }
-            else
+            // F 状态
+            else if (!poseHandler.IsReverse() && poseHandler.IsFast())
             {
-                poseHandler.TurnLeft();
+                poseHandler.Forward();  // 前进1格
+                poseHandler.TurnLeft(); // 左转90度
+            }
+            // B&F 状态
+            else if (poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Backward();  // 后退1格
+                poseHandler.TurnRight(); // 右转90度
+            }
+        }
+        else if (poseHandler.GetCarType() == "Sports")
+        {
+            // Normal 状态
+            if (!poseHandler.IsFast() && !poseHandler.IsReverse())
+            {
+                poseHandler.TurnLeft(); // 左转90度
+                poseHandler.Forward();  // 前进1格
+            }
+            // B 状态
+            else if (poseHandler.IsReverse() && !poseHandler.IsFast())
+            {
+                poseHandler.TurnRight(); // 右转90度
+                poseHandler.Backward();  // 后退1格
+            }
+            // F 状态
+            else if (!poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Forward();  // 前进1格
+                poseHandler.TurnLeft(); // 左转90度
+                poseHandler.Forward();  // 再前进1格
+            }
+            // B&F 状态
+            else if (poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Backward(); // 后退1格
+                poseHandler.TurnRight(); // 右转90度
+                poseHandler.Backward();  // 再后退1格
+            }
+        }
+        else if (poseHandler.GetCarType() == "Bus")
+        {
+            // Normal 状态
+            if (!poseHandler.IsFast() && !poseHandler.IsReverse())
+            {
+                poseHandler.Forward();  // 前进1格
+                poseHandler.TurnLeft(); // 左转90度
+            }
+            // B 状态
+            else if (poseHandler.IsReverse() && !poseHandler.IsFast())
+            {
+                poseHandler.Backward();  // 后退1格
+                poseHandler.TurnRight(); // 右转90度
+            }
+            // F 状态
+            else if (!poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Forward();  // 前进1格
+                poseHandler.Forward();  // 再前进1格
+                poseHandler.TurnLeft(); // 左转90度
+            }
+            // B&F 状态
+            else if (poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Backward();  // 后退1格
+                poseHandler.Backward();  // 再后退1格
+                poseHandler.TurnRight(); // 右转90度
             }
         }
     }
@@ -113,27 +169,85 @@ namespace adas
     {
         if (poseHandler.GetCarType() == "Normal")
         {
-            // 如果处于加速状态，先执行移动
-            if (poseHandler.IsFast())
+            // Normal 状态
+            if (!poseHandler.IsFast() && !poseHandler.IsReverse())
             {
-                if (poseHandler.IsReverse())
-                {
-                    poseHandler.Backward();
-                }
-                else
-                {
-                    poseHandler.Forward();
-                }
+                poseHandler.TurnRight(); // 右转90度
             }
-
-            // 根据倒车状态选择实际转向
-            if (poseHandler.IsReverse())
+            // B 状态
+            else if (poseHandler.IsReverse() && !poseHandler.IsFast())
             {
-                poseHandler.TurnLeft(); // 倒车状态下右转为左转
+                poseHandler.TurnLeft(); // 左转90度
             }
-            else
+            // F 状态
+            else if (!poseHandler.IsReverse() && poseHandler.IsFast())
             {
-                poseHandler.TurnRight();
+                poseHandler.Forward();   // 前进1格
+                poseHandler.TurnRight(); // 右转90度
+            }
+            // B&F 状态
+            else if (poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Backward(); // 后退1格
+                poseHandler.TurnLeft(); // 左转90度
+            }
+        }
+        else if (poseHandler.GetCarType() == "Sports")
+        {
+            // Normal 状态
+            if (!poseHandler.IsFast() && !poseHandler.IsReverse())
+            {
+                poseHandler.TurnRight(); // 右转90度
+                poseHandler.Forward();   // 前进1格
+            }
+            // B 状态
+            else if (poseHandler.IsReverse() && !poseHandler.IsFast())
+            {
+                poseHandler.TurnLeft(); // 左转90度
+                poseHandler.Backward(); // 后退1格
+            }
+            // F 状态
+            else if (!poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Forward();   // 前进1格
+                poseHandler.TurnRight(); // 右转90度
+                poseHandler.Forward();   // 再前进1格
+            }
+            // B&F 状态
+            else if (poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Backward(); // 后退1格
+                poseHandler.TurnLeft(); // 左转90度
+                poseHandler.Backward(); // 再后退1格
+            }
+        }
+        else if (poseHandler.GetCarType() == "Bus")
+        {
+            // Normal 状态
+            if (!poseHandler.IsFast() && !poseHandler.IsReverse())
+            {
+                poseHandler.Forward();   // 前进1格
+                poseHandler.TurnRight(); // 右转90度
+            }
+            // B 状态
+            else if (poseHandler.IsReverse() && !poseHandler.IsFast())
+            {
+                poseHandler.Backward(); // 后退1格
+                poseHandler.TurnLeft(); // 左转90度
+            }
+            // F 状态
+            else if (!poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Forward();   // 前进1格
+                poseHandler.Forward();   // 再前进1格
+                poseHandler.TurnRight(); // 右转90度
+            }
+            // B&F 状态
+            else if (poseHandler.IsReverse() && poseHandler.IsFast())
+            {
+                poseHandler.Backward(); // 后退1格
+                poseHandler.Backward(); // 再后退1格
+                poseHandler.TurnLeft(); // 左转90度
             }
         }
     }
