@@ -29,11 +29,27 @@ namespace adas
     void ExecutorImpl::Execute(const std::string &commands) noexcept
     {
         // Expr3 使用单体工厂类
-        const auto cmders = Singleton<CmderFactory>::Instance().GetCmders(commands);
-        std::for_each(
-            cmders.begin(), cmders.end(),
-            [this](const std::function<void(PoseHandler & poseHandler)> &cmder) noexcept
-            { cmder(poseHandler); });
+        // const auto cmders = Singleton<CmderFactory>::Instance().GetCmders(commands);
+        // std::for_each(
+        //     cmders.begin(), cmders.end(),
+        //     [this](const Cmder &cmder) noexcept
+        //     { cmder(poseHandler); });
+        // 获取 CmderFactory 单例实例
+        auto &factory = Singleton<CmderFactory>::Instance();
+
+        // 调用 GetCmders 获取命令对象列表
+        auto cmders = factory.GetCmders(commands);
+
+        // 遍历 cmders 并执行操作
+        int i = 0;
+        std::cout << "Command Series is: " << commands << std::endl;
+        for (const auto &cmder : cmders)
+        {
+            const auto pose = poseHandler.Query();
+            std::cout << "Current Pose: (" << pose.x << ", " << pose.y << ", " << pose.heading << ")" << std::endl;
+            std::cout << "Executing command " << commands[i++] << std::endl;
+            cmder(poseHandler);            
+        }
     }
     Pose ExecutorImpl::Query() const noexcept
     {
