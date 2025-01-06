@@ -15,6 +15,7 @@ namespace adas {
         executor->Execute(testCase.command);
 
         // Assert: 验证结果
+        printf("Expected Pose is {%d,%d,%c}, Actual Pose is {%d,%d,%c}\n", testCase.expectedPose.x, testCase.expectedPose.y, testCase.expectedPose.heading, executor->Query().x, executor->Query().y, executor->Query().heading);
         ASSERT_EQ(executor->Query(), testCase.expectedPose);
         ASSERT_EQ(executor->GetCarType(), testCase.expectedCarType);
     }

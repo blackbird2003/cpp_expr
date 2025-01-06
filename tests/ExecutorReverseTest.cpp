@@ -1,80 +1,30 @@
 //倒车状态下的指令测试，包含BM,BL,BR,BB.
 #include <gtest/gtest.h>
-#include "Executor.hpp"
-#include "PoseEq.hpp"
+#include "ExecutorDDTTest.hpp"
 
 namespace adas
 {
+    INSTANTIATE_TEST_SUITE_P(
+        ExecutorReverseTest,
+        ExecutorDDTTest,
+        ::testing::Values(
+            // 普通车
+            TestCase{{0, 0, 'E'}, "Normal", "BM", {-1, 0, 'E'}, "Normal"}, // 后退1格
+            TestCase{{0, 0, 'E'}, "Normal", "BL", {0, 0, 'S'}, "Normal"},  // 右转
+            TestCase{{0, 0, 'E'}, "Normal", "BR", {0, 0, 'N'}, "Normal"},  // 左转
+            TestCase{{0, 0, 'E'}, "Normal", "BBM", {1, 0, 'E'}, "Normal"}, // 取消倒车后前进1格
 
-    // 测试：B状态下执行移动指令 (BM)
-    // 期望行为：倒车状态下，移动指令会让小车向反方向移动
-    TEST(ExecutorReverseTest, should_move_in_reverse_given_status_is_back_command_is_M)
-    {
-        // given 初始化小车位置为 (0, 0)，朝向 E
-        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
+            // 跑车
+            TestCase{{0, 0, 'E'}, "Sports", "BM", {-2, 0, 'E'}, "Sports"}, // 后退2格
+            TestCase{{0, 0, 'E'}, "Sports", "BL", {0, 1, 'S'}, "Sports"},  // 右转,再后退1格
+            TestCase{{0, 0, 'E'}, "Sports", "BR", {0, -1, 'N'}, "Sports"}, // 左转，再后退1格
+            TestCase{{0, 0, 'E'}, "Sports", "BBM", {2, 0, 'E'}, "Sports"}, // 取消倒车后前进2格
 
-        // when 执行倒车指令 B 和移动指令 M
-        executor->Execute("BM");
+            // 巴士
+            TestCase{{0, 0, 'E'}, "Bus", "BM", {-1, 0, 'E'}, "Bus"}, // 后退1格
+            TestCase{{0, 0, 'E'}, "Bus", "BL", {-1, 0, 'S'}, "Bus"}, // 后退1格，再右转
+            TestCase{{0, 0, 'E'}, "Bus", "BR", {-1, 0, 'N'}, "Bus"}, // 后退1格，再左转
+            TestCase{{0, 0, 'E'}, "Bus", "BBM", {1, 0, 'E'}, "Bus"}  // 取消倒车后前进1格
 
-        // then 期望小车向反方向移动到 (-1, 0)
-        const Pose target{-1, 0, 'E'};
-        ASSERT_EQ(target, executor->Query());
-    }
-
-    // 测试：B状态下执行左转指令 (BL)
-    // 期望行为：倒车状态下，左转指令会让朝向顺时针旋转90度
-    TEST(ExecutorReverseTest, should_return_facing_south_given_status_is_back_command_is_L_and_facing_is_east)
-    {
-        // given 初始化小车位置为 (0, 0)，朝向 E
-        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
-
-        // when 执行倒车指令 B 和左转指令 L
-        executor->Execute("BL");
-
-        // then 期望朝向从 E 变为 S
-        const Pose target{0, 0, 'S'};
-        ASSERT_EQ(target, executor->Query());
-    }
-
-    // 测试：B状态下执行右转指令 (BR)
-    // 期望行为：倒车状态下，右转指令会让朝向逆时针旋转90度
-    TEST(ExecutorReverseTest, should_return_facing_north_given_status_is_back_command_is_R_and_facing_is_east)
-    {
-        // given 初始化小车位置为 (0, 0)，朝向 E
-        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
-
-        // when 执行倒车指令 B 和右转指令 R
-
-        executor->Execute("BR");
-        // debug
-        //  executor->Execute("B");
-        //  auto st = executor->Query();
-        //  std::cout << "After B command: " << st.x << " " << st.y << " " << st.heading << std::endl;
-
-        // executor->Execute("R");
-        // st = executor->Query();
-        // std::cout << "After R command: " << st.x << " " << st.y << " " << st.heading << std::endl;
-
-        // then 期望朝向从 E 变为 N
-        const Pose target{0, 0, 'N'};
-        ASSERT_EQ(target, executor->Query());
-    }
-
-    // 测试：B状态下再次接收B指令 (BB)
-    // 期望行为：再次接收 B 指令会取消倒车状态，小车恢复正常前进
-    TEST(ExecutorReverseTest, should_cancel_reverse_status_given_status_is_back_command_is_B)
-    {
-        // given 初始化小车位置为 (0, 0)，朝向 E，并进入倒车状态
-        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
-        executor->Execute("B");
-
-        // when 再次执行倒车指令 B，取消倒车状态，然后执行普通移动指令 M
-        executor->Execute("B"); // 取消倒车状态
-        executor->Execute("M"); // 执行普通移动指令
-
-        // then 期望小车正常向前移动到 (1, 0)
-        const Pose target{1, 0, 'E'};
-        ASSERT_EQ(target, executor->Query());
-    }
-
+            ));
 } // namespace adas
