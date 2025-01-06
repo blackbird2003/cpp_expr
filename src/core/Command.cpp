@@ -9,12 +9,12 @@ namespace adas
         {
             if (poseHandler.IsFast() && poseHandler.IsReverse())
             {
-                poseHandler.Backward(); // B&F: 后退2格
+                poseHandler.Backward(); // B&F: 依次后退2格
                 poseHandler.Backward();
             }
             else if (poseHandler.IsFast() && !poseHandler.IsReverse())
             {
-                poseHandler.Forward(); // F: 前进2格
+                poseHandler.Forward(); // F: 依次前进2格
                 poseHandler.Forward();
             }
             else if (!poseHandler.IsFast() && poseHandler.IsReverse())
@@ -30,39 +30,31 @@ namespace adas
         {
             if (poseHandler.IsFast() && poseHandler.IsReverse())
             {
-                poseHandler.Backward(); // B&F: 后退4格
-                poseHandler.Backward();
-                poseHandler.Backward();
-                poseHandler.Backward();
+                poseHandler.Backward(4); // B&F: 后退4格
             }
             else if (poseHandler.IsFast())
             {
-                poseHandler.Forward(); // F: 前进4格
-                poseHandler.Forward();
-                poseHandler.Forward();
-                poseHandler.Forward();
+                poseHandler.Forward(4); // F: 前进4格
             }
             else if (poseHandler.IsReverse())
             {
-                poseHandler.Backward(); // B: 后退2格
-                poseHandler.Backward();
+                poseHandler.Backward(2); // B: 后退2格
             }
             else
             {
-                poseHandler.Forward(); // Normal: 前进2格
-                poseHandler.Forward();
+                poseHandler.Forward(2); // Normal: 前进2格
             }
         }
         else if (poseHandler.GetCarType() == "Bus")
         {
             if (poseHandler.IsFast() && poseHandler.IsReverse())
             {
-                poseHandler.Backward(); // B&F: 后退2格
+                poseHandler.Backward(); // B&F: 依次后退2格
                 poseHandler.Backward();
             }
             else if (poseHandler.IsFast())
             {
-                poseHandler.Forward(); // F: 前进2格
+                poseHandler.Forward(); // F: 依次前进2格
                 poseHandler.Forward();
             }
             else if (poseHandler.IsReverse())
@@ -128,7 +120,7 @@ namespace adas
             // B&F 状态
             else if (poseHandler.IsReverse() && poseHandler.IsFast())
             {
-                poseHandler.Backward(); // 后退1格
+                poseHandler.Backward();  // 后退1格
                 poseHandler.TurnRight(); // 右转90度
                 poseHandler.Backward();  // 再后退1格
             }
